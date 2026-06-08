@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world # Changed to match Jenkins pipeline
+  namespace: staging # Added namespace to match Jenkins
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hello-world # Changed to match typical naming
+  template:
+    metadata:
+      labels:
+        app: hello-world # Changed to match typical naming
+        label: label
+    spec:
+      containers:
+        - name: hello-world # Changed to match Jenkins set image command
+          image: phyothetkhaing/hello-world-service:latest # Will be overridden by Jenkins
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SERVER_SERVLET_CONTEXT_PATH
+              value: "/calculator"
+            - name: SPRINGDOC_API_DOCS_PATH
+              value: "/calculator/v3/api-docs"
+            - name: SPRINGDOC_SWAGGER_UI_PATH
+              value: "/swagger-ui.html"
