@@ -49,21 +49,14 @@ pipeline {
 
         stage('Deploy to STAGING') {
     steps {
-        withCredentials([
-            file(
-                credentialsId: 'kubeconfig-stagging',
-                variable: 'KUBECONFIG'
-            )
-        ]) {
+        withCredentials([file(credentialsId: 'kubeconfig-stagging', variable: 'KUBECONFIG')]) {
             sh '''
-            export KUBECONFIG=$KUBECONFIG
+            kubectl create namespace staging --dry-run=client -o yaml | kubectl apply -f -
 
-            kubectl config current-context
+            kubectl apply -f deployment.yaml -n staging
+            kubectl apply -f service.yaml -n staging
 
-            kubectl apply -f deployment.yaml --server=https://host.docker.internal:54969 --validate=false --insecure-skip-tls-verify=true
-            kubectl apply -f service.yaml  --validate=false --insecure-skip-tls-verify=true
-
-            
+            kubectl rollout status deployment/hello-world -n staging
             '''
         }
     }
