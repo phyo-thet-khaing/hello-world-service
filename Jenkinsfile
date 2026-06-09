@@ -9,7 +9,7 @@ pipeline {
         IMAGE_NAME = "hello-world-service"
         TAG = "${BUILD_ID}"
         DOCKER_IMAGE = "phyothetkhaing/${IMAGE_NAME}:${TAG}"
-        KUBECONFIG_STAGING = credentials('kubeconfig-staging')
+        
     }
 
     stages {
