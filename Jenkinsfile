@@ -47,7 +47,7 @@ pipeline {
             }
         }
 
-        stage('Deploy to STAGING') {
+ stage('Deploy to STAGING') {
     steps {
         withCredentials([
             file(
@@ -56,8 +56,10 @@ pipeline {
             )
         ]) {
                     sh '''
-                    kubectl apply -f deployment.yaml --server=https://host.docker.internal:54969 --validate=false --insecure-skip-tls-verify=true
-                    kubectl apply -f service.yaml --validate=false --insecure-skip-tls-verify=true
+                    kubectl create namespace staging --dry-run=client -o yaml | kubectl apply -f -
+
+                    kubectl apply -f deployment.yaml -n staging --server=https://host.docker.internal:54969 --validate=false --insecure-skip-tls-verify=true
+                    kubectl apply -f service.yaml -n staging --validate=false --insecure-skip-tls-verify=true
                     '''
                 }
     }
