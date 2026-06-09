@@ -56,7 +56,6 @@ stage('Deploy to STAGING') {
             )
         ]) {
                     sh '''
-                    kubectl create namespace staging --dry-run=client -o yaml | kubectl apply -f -
 
                     kubectl apply -f deployment.yaml -n staging --validate=false
                     kubectl apply -f service.yaml -n staging --validate=false
