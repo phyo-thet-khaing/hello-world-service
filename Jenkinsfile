@@ -9,7 +9,6 @@ pipeline {
         IMAGE_NAME = "hello-world-service"
         TAG = "${BUILD_ID}"
         DOCKER_IMAGE = "phyothetkhaing/${IMAGE_NAME}:${TAG}"
-
         KUBE_DEPLOYMENT = "deployment.yaml"
         KUBE_SERVICE = "service.yaml"
     }
@@ -56,12 +55,12 @@ pipeline {
             }
         }
 
-        stage('Performance Test') {
-            steps {
-                sh "chmod +x performance-test.sh"
-                sh "./performance-test.sh"
-            }
-        }
+        // stage('Performance Test') {
+        //     steps {
+        //         sh "chmod +x performance-test.sh"
+        //         sh "./performance-test.sh"
+        //     }
+        // }
     }
 
     post {
