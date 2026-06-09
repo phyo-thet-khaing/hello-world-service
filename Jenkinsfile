@@ -9,6 +9,7 @@ pipeline {
         IMAGE_NAME = "hello-world-service"
         TAG = "${BUILD_ID}"
         DOCKER_IMAGE = "phyothetkhaing/${IMAGE_NAME}:${TAG}"
+        KUBECONFIG_STAGING = credentials('kubeconfig-staging')
     }
 
     stages {
@@ -47,14 +48,17 @@ pipeline {
         }
 
         stage('Deploy to Staging') {
-            steps {
-                sh """
-                kubectl set image deployment/hello-world \
-                hello-world=${DOCKER_IMAGE} -n staging
-                kubectl rollout status deployment/hello-world -n staging
-                """
-            }
-        }
+    steps {
+        sh """
+        export KUBECONFIG=${KUBECONFIG_STAGING}
+
+        kubectl set image deployment/hello-world \
+        hello-world=${DOCKER_IMAGE} -n staging
+
+        kubectl rollout status deployment/hello-world -n staging
+        """
+    }
+}
     }
 
     post {
