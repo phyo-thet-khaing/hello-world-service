@@ -9,8 +9,6 @@ pipeline {
         IMAGE_NAME = "hello-world-service"
         TAG = "${BUILD_ID}"
         DOCKER_IMAGE = "phyothetkhaing/${IMAGE_NAME}:${TAG}"
-        KUBE_DEPLOYMENT = "deployment.yaml"
-        KUBE_SERVICE = "service.yaml"
     }
 
     stages {
@@ -32,35 +30,31 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
-                    sh "docker push ${DOCKER_IMAGE}"
+                    withCredentials([
+                        usernamePassword(
+                            credentialsId: 'docker-hub-cred',
+                            usernameVariable: 'DOCKER_USER',
+                            passwordVariable: 'DOCKER_PASS'
+                        )
+                    ]) {
+                        sh """
+                        echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                        docker push ${DOCKER_IMAGE}
+                        """
+                    }
                 }
             }
         }
 
         stage('Deploy to Staging') {
             steps {
-                script {
-                    sh """
-                    kubectl set image deployment/hello-world \
-                    hello-world=${DOCKER_IMAGE} -n staging
-                    """
-                }
+                sh """
+                kubectl set image deployment/hello-world \
+                hello-world=${DOCKER_IMAGE} -n staging
+                kubectl rollout status deployment/hello-world -n staging
+                """
             }
         }
-
-        stage('Wait for Deployment') {
-            steps {
-                sh "sleep 20"
-            }
-        }
-
-        // stage('Performance Test') {
-        //     steps {
-        //         sh "chmod +x performance-test.sh"
-        //         sh "./performance-test.sh"
-        //     }
-        // }
     }
 
     post {
