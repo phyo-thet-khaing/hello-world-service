@@ -56,7 +56,7 @@ stage('Deploy to STAGING') {
             )
         ]) {
                     sh '''
-
+                    kubectl config use-context kind-helloworld-stagging
                     kubectl apply -f deployment.yaml --server=https://helloworld-stagging-control-plane:6443 --validate=false --insecure-skip-tls-verify=true
                     kubectl apply -f service.yaml  --validate=false --insecure-skip-tls-verify=true
                     ''' 
