@@ -51,14 +51,14 @@ stage('Deploy to STAGING') {
     steps {
         withCredentials([
             file(
-                credentialsId: 'kubeconfig-stagging',
+                credentialsId: 'kubeconfig-staging',
                 variable: 'KUBECONFIG'
             )
         ]) {
                     sh '''
-                    kubectl config use-context kind-helloworld-stagging
-                    kubectl apply -f deployment.yaml --server=https://helloworld-stagging-control-plane:6443 --validate=false --insecure-skip-tls-verify=true
-                    kubectl apply -f service.yaml  --validate=false --insecure-skip-tls-verify=true
+                    kubectl config use-context kind-helloworld-staging
+                    kubectl apply -f deployment.yaml --server=https://helloworld-staging-control-plane:6443 --validate=false --insecure-skip-tls-verify=true
+                    kubectl apply -f service.yaml  --validate=false --server=https://helloworld-staging-control-plane:6443 --insecure-skip-tls-verify=true
                     ''' 
                 }
     }
