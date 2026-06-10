@@ -57,9 +57,9 @@ stage('Deploy to STAGING') {
         ]) {
                     sh '''
 
-                    kubectl apply -f deployment.yaml -n staging --validate=false
-                    kubectl apply -f service.yaml -n staging --validate=false
-                    '''
+                    kubectl apply -f deployment.yaml --server=https://helloworld-stagging-control-plane:6443 --validate=false --insecure-skip-tls-verify=true
+                    kubectl apply -f service.yaml  --validate=false --insecure-skip-tls-verify=true
+                    ''' 
                 }
     }
 }
