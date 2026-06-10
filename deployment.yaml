@@ -21,8 +21,8 @@ spec:
             - containerPort: 8080
           env:
             - name: SERVER_SERVLET_CONTEXT_PATH
-              value: "/calculator"
+              value: "/hello-world"
             - name: SPRINGDOC_API_DOCS_PATH
-              value: "/calculator/v3/api-docs"
+              value: "/hello-world/v3/api-docs"
             - name: SPRINGDOC_SWAGGER_UI_PATH
               value: "/swagger-ui.html"
