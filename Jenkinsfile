@@ -53,7 +53,7 @@ pipeline {
 
 
 
-        stage('Deploy to Staging') {
+         stage('Deploy to Staging') {
             steps {
                 withKubeConfig([credentialsId: 'kubeconfig-staging']) {
                     sh '''
