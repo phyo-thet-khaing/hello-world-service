@@ -52,13 +52,7 @@ pipeline {
         }
 
 
-//         stage('Deploy to Staging') {
-//             steps {
-//                 withKubeConfig([credentialsId: 'staging-kubeconfig']) {
-//                     sh 'kubectl apply -f deployment.yml'
-//                 }
-//             }
-//         }
+
         stage('Deploy to Staging') {
             steps {
                 withKubeConfig([credentialsId: 'kubeconfig-staging']) {
