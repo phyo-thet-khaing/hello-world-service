@@ -53,21 +53,40 @@ pipeline {
 
 
 
+        // stage('Deploy to Staging') {
+        //     steps {
+        //         withCredentials([
+        //     file(
+        //         credentialsId: 'kubeconfig-staging',
+        //         variable: 'KUBECONFIG'
+        //     )
+        // ]) {
+        //             sh '''
+        //             kubectl config use-context  kind-helloworld-staging
+        //             kubectl apply -f deployment.yaml --server=https://helloworld-staging-control-plane:6443 --validate=false --insecure-skip-tls-verify=true
+                    
+        //             ''' 
+        //         }
+        //     }
+        // }
+
         stage('Deploy to Staging') {
-            steps {
-                withCredentials([
+    steps {
+        withCredentials([
             file(
                 credentialsId: 'kubeconfig-staging',
                 variable: 'KUBECONFIG'
             )
         ]) {
-                    sh '''
-                    kubectl config use-context kind-helloworld-staging
-                    kubectl apply -f deployment.yaml --server=https://helloworld-staging-control-plane:6443 --validate=false --insecure-skip-tls-verify=true
-                    kubectl apply -f service.yaml  --validate=false --server=https://helloworld-staging-control-plane:6443 --insecure-skip-tls-verify=true
-                    ''' 
-                }
-            }
+            sh '''
+            kubectl config use-context kind-helloworld-staging
+            kubectl cluster-info
+
+            kubectl apply -f deployment.yaml
+            kubectl apply -f service.yaml
+            '''
         }
+    }
+}
     }
 }
