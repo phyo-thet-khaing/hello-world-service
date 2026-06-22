@@ -53,21 +53,9 @@ pipeline {
 
 
 
-        //  stage('Deploy to Staging') {
-        //     steps {
-        //         withKubeConfig([credentialsId: 'kubeconfig-staging']) {
-        //             sh '''
-        //                 kubectl config current-context
-        //                 kubectl get nodes
-        //                 kubectl apply -f deployment.yml --server=https://helloworld-staging-control-plane:6443 --validate=false --insecure-skip-tls-verify=true
-        //             '''
-        //         }
-        //     }
-        // }
-
-        stage('Deploy to STAGING') {
-    steps {
-        withCredentials([
+        stage('Deploy to Staging') {
+            steps {
+                withCredentials([
             file(
                 credentialsId: 'kubeconfig-staging',
                 variable: 'KUBECONFIG'
@@ -79,7 +67,7 @@ pipeline {
                     kubectl apply -f service.yaml  --validate=false --server=https://helloworld-staging-control-plane:6443 --insecure-skip-tls-verify=true
                     ''' 
                 }
-    }
-
+            }
+        }
     }
 }
