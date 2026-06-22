@@ -16,12 +16,12 @@ spec:
     spec:
       containers:
         - name: hello-world # Changed to match Jenkins set image command
-          image: phyothetkhaing/hello-world-service:latest # Will be overridden by Jenkins
+          image: phyothetkhaing/hello-test:v1.0 # Will be overridden by Jenkins
           ports:
             - containerPort: 8080
           env:
             - name: SERVER_SERVLET_CONTEXT_PATH
-              value: "/hello-world"
+              value: "/"
             - name: SPRINGDOC_API_DOCS_PATH
               value: "/hello-world/v3/api-docs"
             - name: SPRINGDOC_SWAGGER_UI_PATH

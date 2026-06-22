@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloWorldServiceController {
 	
-	@GetMapping("/home")
+	@GetMapping("/helloworld")
 	public String index()
 	{
 		return "helloworld-service";
