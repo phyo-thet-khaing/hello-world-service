@@ -42,13 +42,23 @@ pipeline {
                                                   usernameVariable: 'DOCKER_USER',
                                                   passwordVariable: 'DOCKER_PASS')]) {
                     script {
-                        sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
-                        sh "docker push ${DOCKER_REGISTRY}:v1.0"
+                        sh '''
+                        echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                        docker push $DOCKER_USER/hello-test:v1.0
+                    '''
                     }
                 }
             }
         }
 
+
+//         stage('Deploy to Staging') {
+//             steps {
+//                 withKubeConfig([credentialsId: 'staging-kubeconfig']) {
+//                     sh 'kubectl apply -f deployment.yml'
+//                 }
+//             }
+//         }
         stage('Deploy to Staging') {
             steps {
                 withKubeConfig([credentialsId: 'kubeconfig-staging']) {
